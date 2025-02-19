@@ -30,7 +30,7 @@ import {
                   Get started in minutes with our intuitive self-service platform. Just
                   connect your website and upload your docs - our AI instantly builds
                   your secure Knowledge Vault. Want personalized guidance? Schedule a
-                  free 15-minute call with me (Jacky, the founder) and I'll help optimize
+                  free 15-minute call with me (Jacky, the founder) and I&apos;ll help optimize
                   your setup. No tech expertise needed - everything is designed to get
                   you up and running quickly.
                 </AccordionContent>
@@ -38,11 +38,11 @@ import {
               <AccordionItem value="item-2">
                 <AccordionTrigger>02. Your AI grows smarter every day</AccordionTrigger>
                 <AccordionContent>
-                  Make Answer HQ truly yours - from matching your website's design to
-                  speaking in your brand's tone. Customize Quick Questions that your
+                  Make Answer HQ truly yours - from matching your website&apos;s design to
+                  speaking in your brand&apos;s tone. Customize Quick Questions that your
                   customers ask, and discover new ones through our analytics dashboard.
-                  As customers interact with your AI assistant, you'll see exactly what
-                  they're asking, helping you continuously improve your knowledge base.
+                  As customers interact with your AI assistant, you&apos;ll see exactly what
+                  they&apos;re asking, helping you continuously improve your knowledge base.
                   Your assistant gets smarter every day, ensuring customers always get
                   accurate answers in your unique voice.
                 </AccordionContent>
