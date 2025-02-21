@@ -1,5 +1,7 @@
 interface StepOneProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     formData: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setFormData: (data: any) => void;
     setStep: (step: number) => void;
   }
@@ -29,7 +31,7 @@ interface StepOneProps {
       <div>
         <h2 className="text-xl font-bold mb-4">Welcome to mailed it!</h2>
         <p className="text-gray-600 mb-6">
-          Great to have you here! Let's set up your Answer HQ assistant in just a few quick steps.
+          Great to have you here! Let&apos;s set up your Answer HQ assistant in just a few quick steps.
         </p>
   
         {/* Company Name */}

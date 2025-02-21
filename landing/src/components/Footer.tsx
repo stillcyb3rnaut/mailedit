@@ -57,7 +57,7 @@ export function Footer() {
         <p>mailedit</p>
         <Link
           className="hover:text-cyan-400 transition-colors"
-          href="https://ai-kyam.vercel.app/"
+          href="https://aikyam.live/"
           target="_blank"
           rel="noopener noreferrer"
         >

@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 
 export function Onboarding() {
   const pathname = usePathname();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
 
   const [step, setStep] = useState(1);
@@ -46,13 +46,13 @@ useEffect(() => {
   }else{
     localStorage.setItem("formData", JSON.stringify(formData));
   }
-}, []);
+}, [formData]);
 
 useEffect(()=>{
   if(!session || !session.user || !session.user.email) return;
 
   setFormData({...formData, emailVerified:true, email: session?.user?.email, verifiedEmail: session.user.email})  
-} ,[useSession,session, session?.user?.email])
+} ,[session, session?.user?.email,formData])
 
 
 

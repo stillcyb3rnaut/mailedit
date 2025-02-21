@@ -2,14 +2,16 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";  // ✅ Import NextAuth signIn
 
 interface StepTwoProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formData: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFormData: (data: any) => void;
 }
 
 export default function StepTwo({ formData, setFormData }: StepTwoProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [verified, setVerified] = useState(false);
+  // const [verified, setVerified] = useState(false);
 
   const handleOAuthLogin = async (provider: "google" | "azure-ad") => {
     try {
@@ -17,6 +19,7 @@ export default function StepTwo({ formData, setFormData }: StepTwoProps) {
       localStorage.setItem("formData", JSON.stringify(formData));
   
       await signIn(provider, { callbackUrl: "/onboarding" });  
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setError("OAuth login failed. Try again.");
     }
@@ -42,7 +45,8 @@ export default function StepTwo({ formData, setFormData }: StepTwoProps) {
       if (!res.ok) throw new Error("Failed to create user");
 
       alert("User created successfully!");
-    } catch (err) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err:any) {
       setError(err.message || "Something went wrong");
     } finally {
       setLoading(false);
