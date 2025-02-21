@@ -1,10 +1,11 @@
 import ExampleCard from "@/components/MailCard";
+import { AICard } from "../Aicard";
 
 export default function Page2() {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center p-10 space-y-6">
       <h1 className="text-3xl font-bold">Choose an Email Template</h1>
-
+      <AICard height="540px"/>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <ExampleCard
           title="Elegant Welcome Email"

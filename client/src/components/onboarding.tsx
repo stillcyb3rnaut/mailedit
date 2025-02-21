@@ -1,10 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StepOne from "./stepOne";
 import StepTwo from "./stepTwo";
+import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export function Onboarding() {
+  const pathname = usePathname();
+  const { data: session, status } = useSession();
+
+
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     companyName: "",
@@ -12,9 +18,43 @@ export function Onboarding() {
     industry: "",
     tools: [],
     email: "",
+    emailVerified: false,
+    verifiedEmail:"",
     emailType: "personal", // "personal" or "business"
     appPassword: "",
   });
+
+
+  useEffect(() => {
+    let title = "Mailed it"; // Default title
+
+    if (pathname.includes("onboarding")) title = "Onboarding | Mailed it";
+    else if (pathname.includes("dashboard")) title = "Maiks | Mailed it";
+    else title =  "Overview | Mailed it"
+
+    document.title = title;
+  }, [pathname]);
+
+
+ 
+useEffect(() => {
+
+  const storedData = localStorage.getItem("formData");
+  if (storedData) {
+     setStep(2);
+    setFormData(JSON.parse(storedData));  // Restore formData
+  }else{
+    localStorage.setItem("formData", JSON.stringify(formData));
+  }
+}, []);
+
+useEffect(()=>{
+  if(!session || !session.user || !session.user.email) return;
+
+  setFormData({...formData, emailVerified:true, email: session?.user?.email, verifiedEmail: session.user.email})  
+} ,[useSession,session, session?.user?.email])
+
+
 
   return (
     <div className="max-w-3xl mx-auto p-9 rounded-lg shadow-md">
@@ -47,6 +87,8 @@ export function Onboarding() {
       {/* Render Steps */}
       {step === 1 && <StepOne formData={formData} setFormData={setFormData} setStep={setStep} />}
       {step === 2 && <StepTwo formData={formData} setFormData={setFormData} />}
+   
+ 
     </div>
   );
 }

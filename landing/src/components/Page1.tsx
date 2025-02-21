@@ -4,7 +4,7 @@
 
 export  function Page1() {
   return (
-    <div className="relative w-full h-screen bg-black flex items-center justify-center">
+    <div className="relative w-full h-[70vh] bg-black flex items-center justify-center">
       {/* 3D Background */}
       <div className="absolute inset-0 z-0">
         {/* <AuroraBallScene /> */}

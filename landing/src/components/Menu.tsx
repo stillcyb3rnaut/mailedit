@@ -1,9 +1,10 @@
 // components/Menu.tsx
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
-import { TwitterLogoIcon, InstagramLogoIcon } from "@radix-ui/react-icons";
-import Link from "next/link"; // Import Link from Next.js
+import Link from "next/link";
+ import { Twitter, Instagram, Youtube } from "lucide-react";
 
+ 
 export function Menu() {
   return (
 
@@ -43,23 +44,20 @@ export function Menu() {
             </Link>
           </DropdownMenu.Item>
 
-          {/* Social icons inside the dropdown */}
-          <div className="flex space-x-4 p-2 border-t border-slate-900 mt-2">
-            <Link
-              href="https://twitter.com"
-              aria-label="Twitter"
-              className="hover:opacity-75 transition-opacity"
-            >
-              <TwitterLogoIcon className="w-6 h-6 text-white" />
-            </Link>
-            <Link
-              href="https://instagram.com"
-              aria-label="Instagram"
-              className="hover:opacity-75 transition-opacity"
-            >
-              <InstagramLogoIcon className="w-6 h-6 text-white" />
-            </Link>
-          </div>
+               {/* Social Media Links */}
+        <div className="flex gap-6">
+             {/* Footer Icon */}
+    
+        <Link href="https://twitter.com/aikyamllc" target="_blank">
+          <Twitter className="w-6 h-6 text-gray-400 hover:text-blue-500 transition-colors" />
+        </Link>
+        <Link href="https://instagram.com/aikyamllc" target="_blank">
+          <Instagram className="w-6 h-6 text-gray-400 hover:text-pink-500 transition-colors" />
+        </Link>
+        <Link href="https://youtube.com/@aikyamllc" target="_blank">
+          <Youtube className="w-6 h-6 text-gray-400 hover:text-red-500 transition-colors" />
+        </Link>
+      </div>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>

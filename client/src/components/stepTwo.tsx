@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { signIn } from "next-auth/react";  // ✅ Import NextAuth signIn
 
 interface StepTwoProps {
   formData: any;
@@ -8,13 +9,27 @@ interface StepTwoProps {
 export default function StepTwo({ formData, setFormData }: StepTwoProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [verified, setVerified] = useState(false);
 
-  const handleSubmit = async () => {
+  const handleOAuthLogin = async (provider: "google" | "azure-ad") => {
+    try {
+      // Store formData in localStorage before redirecting
+      localStorage.setItem("formData", JSON.stringify(formData));
+  
+      await signIn(provider, { callbackUrl: "/onboarding" });  
+    } catch (err) {
+      setError("OAuth login failed. Try again.");
+    }
+  };
+  
+
+  
+  const handleFinishSetup = async () => {
     setLoading(true);
     setError("");
 
     try {
-      const res = await fetch("/api/create-user", {
+      const res = await fetch("http://localhost:5000/auth/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -34,12 +49,31 @@ export default function StepTwo({ formData, setFormData }: StepTwoProps) {
     }
   };
 
+
+if( formData.emailVerified && formData.verifiedEmail){
+  return (
+   
+        <div className="mt-4">
+          <p className="text-green-500 font-bold">✅ Email Verified: {formData.verifiedEmail}</p>
+        
+          {/* Submit Button */}
+      <button
+        className="px-4 py-2 bg-white text-black rounded-md mt-4"
+        onClick={handleFinishSetup}
+        disabled={loading || !formData.email || (formData.emailType === "business" && !formData.appPassword)}
+      >
+        {loading ? "Processing..." : "Finish Setup"}
+      </button>
+        </div>
+  
+  )
+}
+
+
   return (
     <div>
       <h2 className="text-xl font-bold mb-4">Add Your Email</h2>
-      <p className="text-gray-600 mb-6">
-        Choose how you want to set up email sending.  
-      </p>
+      <p className="text-gray-600 mb-6">Choose how you want to set up email sending.</p>
 
       {/* Email Type Selection */}
       <div className="mb-4">
@@ -47,45 +81,44 @@ export default function StepTwo({ formData, setFormData }: StepTwoProps) {
         <div className="flex gap-4">
           <button
             className={`px-4 py-2 rounded-md ${
-              formData.emailType === "personal" ? " text-blue-500 font-bold " : "text-gray-500"
+              formData.emailType === "personal" ? "text-blue-500 font-bold" : "text-gray-500"
             }`}
             onClick={() => setFormData({ ...formData, emailType: "personal" })}
           >
-            Personal (user@gmail.com / outlook.com)
+            Personal (Gmail )
           </button>
           <button
             className={`px-4 py-2 rounded-md ${
-              formData.emailType === "business" ? "text-blue-500  font-bold" : "text-gray-500"
+              formData.emailType === "business" ? "text-blue-500 font-bold" : "text-gray-500"
             }`}
             onClick={() => setFormData({ ...formData, emailType: "business" })}
           >
-            Business (user@yourdomain.com)
+            Business (Custom Domain)
           </button>
         </div>
       </div>
 
       {/* Personal Email (Google & Outlook OAuth) */}
       {formData.emailType === "personal" && (
-  <div className="mb-4">
-    <label className="block font-medium">Sign in with:</label>
-    <div className="flex gap-4">
-      <button
-        className="px-4 py-2 bg-red-500 text-white rounded-md"
-        onClick={() => window.location.href = "/api/auth/google"}
-      >
-        Continue with Google
-      </button>
-      <button
-        className="px-4 py-2 bg-blue-500 text-white rounded-md"
-        onClick={() => window.location.href = "/api/auth/outlook"}
-      >
-        Continue with Outlook
-      </button>
-    </div>
-  </div>
-)}
+        <div className="mb-4">
+           <div className="flex gap-4">
+            <button
+              className="px-4 py-2 bg-black border border-gray-600 text-white rounded-md"
+              onClick={() => handleOAuthLogin("google")}
+            >
+              Continue with Google
+            </button>
+            {/* <button
+              className="px-4 py-2 bg-black border border-gray-600 text-white rounded-md"
+              onClick={() => handleOAuthLogin("azure-ad")}
+            >
+              Continue with Outlook
+            </button> */}
+          </div>
+        </div>
+      )}
 
-
+   
       {/* Business Email (SMTP + App Password) */}
       {formData.emailType === "business" && (
         <>
@@ -93,17 +126,17 @@ export default function StepTwo({ formData, setFormData }: StepTwoProps) {
             <label className="block font-medium">Business Email *</label>
             <input
               type="email"
-              className="w-full bg-black  p-2 border border-gray-700 text-gray-400  rounded-md  "
+              className="w-full bg-black p-2 border border-gray-700 text-gray-400 rounded-md"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
           </div>
 
-          <div className="mb-4 ">
+          <div className="mb-4">
             <label className="block font-medium">App Password *</label>
             <input
               type="password"
-              className="w-full bg-black  p-2 border border-gray-700 text-gray-400  rounded-md"
+              className="w-full bg-black p-2 border border-gray-700 text-gray-400 rounded-md"
               value={formData.appPassword}
               onChange={(e) => setFormData({ ...formData, appPassword: e.target.value })}
             />
@@ -117,11 +150,12 @@ export default function StepTwo({ formData, setFormData }: StepTwoProps) {
       {/* Submit Button */}
       <button
         className="px-4 py-2 bg-white text-black rounded-md mt-4"
-        onClick={handleSubmit}
-        disabled={loading || !formData.email || (formData.emailType === "business" && !formData.appPassword)}
+        onClick={handleFinishSetup}
+        disabled={loading || !formData.verifiedEmail }
       >
         {loading ? "Processing..." : "Finish Setup"}
       </button>
-    </div>
+
+     </div>
   );
 }
