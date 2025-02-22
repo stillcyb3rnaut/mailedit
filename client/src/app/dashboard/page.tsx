@@ -15,9 +15,11 @@ export default function Dashboard() {
       <p className="text-gray-500">Email: {session.user?.email}</p>
       {session.user?.image &&
       <Image
+         
         src ={session.user?.image}
         alt="Profile"
-        className="w-16 h-16 rounded-full mt-4"
+       height={40}
+       width={50}
       />
       }
       {/* Logout Button */}
